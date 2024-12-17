@@ -11,7 +11,7 @@ type SharedMemory interface {
 	Get() ([]byte, error)
 }
 
-const SHMSIZE = 1024
+const SHMSIZE = 1024 * 1000
 
 type InMemory struct {
 	ptrID int

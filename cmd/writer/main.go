@@ -1,7 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"math/rand/v2"
+	"time"
 
 	"github.com/jeromelesaux/sharedmemory/model"
 )
@@ -14,13 +17,22 @@ func (d Data) String() string {
 	return d.S
 }
 
+var (
+	pid = flag.Int("ID of the shared memory", 0, "ID of the shared memory to read")
+)
+
 func main() {
-	sm, err := model.NewInMemory(0)
+	flag.Parse()
+	sm, err := model.NewInMemory(*pid)
 	if err != nil {
 		panic(err)
 	}
 	data := model.NewRing()
-	data.Add(Data{S: "hello world"})
+	for i := 0; i < rand.IntN(100); i++ {
+		data.Add(Data{S: "hello world"})
+		data.Add(Data{S: "how are you"})
+	}
+	now := time.Now()
 	b, err := data.ToBytes()
 	if err != nil {
 		panic(err)
@@ -28,7 +40,6 @@ func main() {
 	if err := sm.Set(b); err != nil {
 		panic(err)
 	}
-
+	fmt.Printf("write in [%d] milliseconds\n", time.Now().UnixMilli()-now.UnixMilli())
 	fmt.Println(sm.String())
-
 }

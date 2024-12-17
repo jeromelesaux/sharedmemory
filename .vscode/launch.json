@@ -17,7 +17,8 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${workspaceFolder}/cmd/reader/main.go"
+            "program": "${workspaceFolder}/cmd/reader/main.go",
+            "args": ["-id", "65552"]
         }
     ]
 }
